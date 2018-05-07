@@ -51,21 +51,18 @@ public class BotaoEntrarListener implements ActionListener {
 
 				Icon img = new ImageIcon("src/aplicacao/icones/logoMaior.png");
 				JLabel logo = new JLabel(img);
-				
-				Icon img2 = new ImageIcon("src/aplicacao/icones/background.jpg");
-				JLabel background = new JLabel(img2);
 
 				JPanel painelImagem = new JPanel();
 				painelImagem.add(logo);
 				painelImagem.setBackground(Color.white);
 				
-				JPanel painelImagem2 = new JPanel();
-				painelImagem2.setPreferredSize(new Dimension(50,50));
+				JPanel barra = new JPanel();
+				barra.setPreferredSize(new Dimension(50,50));
 				Color c = new Color(79,78,71);  
-				painelImagem2.setBackground(c);
+				barra.setBackground(c);
 
 				ct.add(painelImagem,BorderLayout.NORTH);
-				ct.add(painelImagem2,BorderLayout.SOUTH);
+				ct.add(barra,BorderLayout.SOUTH);
 
 				administradorFrame.setVisible(true);
 				administradorFrame.pack();
@@ -80,15 +77,20 @@ public class BotaoEntrarListener implements ActionListener {
 				bibliotecarioFrame.setLocation(100, 100);
 
 				Container ct = bibliotecarioFrame.getContentPane();
-				ct.setLayout(new FlowLayout());
+				ct.setLayout(new BorderLayout());
 				ct.setBackground(Color.white);
 
 				Icon img = new ImageIcon("src/aplicacao/icones/logoMaior.png");
 				JLabel logo = new JLabel(img);
-
 				logo.setBackground(Color.white);
+				
+				JPanel barra = new JPanel();
+				barra.setPreferredSize(new Dimension(50,50));
+				Color c = new Color(79,78,71);  
+				barra.setBackground(c);
 
-				ct.add(logo);
+				ct.add(logo,BorderLayout.NORTH);
+				ct.add(barra,BorderLayout.SOUTH);
 
 				bibliotecarioFrame.setVisible(true);
 				bibliotecarioFrame.pack();

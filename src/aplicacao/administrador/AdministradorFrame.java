@@ -258,17 +258,16 @@ public class AdministradorFrame extends JFrame {
 	    comp.setForeground(Color.white);
 	}
 	
-	public void setDefaultFont(Font defaultFont){
+	public void setDefaultFont(Font defaultFont) {
 
-		   FontUIResource font = new FontUIResource(defaultFont);
+		FontUIResource font = new FontUIResource(defaultFont);
 
-		   Enumeration<?> uiManagerKeys = UIManager.getDefaults().keys();
-		   while(uiManagerKeys.hasMoreElements()){
-		        Object key   = uiManagerKeys.nextElement(),
-		               value = UIManager.get(key);
+		Enumeration<?> uiManagerKeys = UIManager.getDefaults().keys();
+		while (uiManagerKeys.hasMoreElements()) {
+			Object key = uiManagerKeys.nextElement(), value = UIManager.get(key);
 
-		        if(null != value && value instanceof FontUIResource)
-		            UIManager.put(key, font);
-		   }
+			if (null != value && value instanceof FontUIResource)
+				UIManager.put(key, font);
 		}
+	}
 }

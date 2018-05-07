@@ -1,13 +1,24 @@
 package aplicacao.bibliotecario;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Toolkit;
+import java.util.Enumeration;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.basic.BasicMenuBarUI;
 
 import aplicacao.administrador.eventos.MenuItemAltSenhaListener;
 import aplicacao.bibliotecario.eventos.MenuItemAtuaLeitorListener;
@@ -25,18 +36,21 @@ import aplicacao.eventos_sistema.MenuItemSairListener;
 
 public class BibliotecarioFrame extends JFrame {
 	public BibliotecarioFrame() {
-		super("Sistema DigiTeca - Bibliotecario");
+		super("Sistema DigiTeca - Bibliotecário");
+		Font font = new Font("Arial", Font.PLAIN, 14);
+		setDefaultFont(font);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("img\\logo.png"));
+
 		criarMenu();
 	}
 	private void criarMenu() {
 		// Menu Usuario
-		JMenu menuUsuario = new JMenu("Usuario");
+		JMenu menuUsuario = new JMenu("Usuário");
 		Icon iconeUsuario = new ImageIcon("src/aplicacao/icones/iconeUsuario.png");
 		menuUsuario.setIcon(iconeUsuario);
-		menuUsuario.setFont(new Font("Calibre", Font.BOLD, 18));
 
-		Icon iconeSenha = new ImageIcon("src/aplicacao/icones/iconeSenha.png");
-		Icon iconeSair = new ImageIcon("src/aplicacao/icones/iconeSairSistema.png");
+		Icon iconeSenha = new ImageIcon("src/aplicacao/icones/iconAtuaSenha.png");
+		Icon iconeSair = new ImageIcon("src/aplicacao/icones/iconeSairSistema2.png");
 		
 		JMenuItem menuItemSenha = new JMenuItem("Alterar Senha", iconeSenha);
 		menuUsuario.add(menuItemSenha);
@@ -47,7 +61,6 @@ public class BibliotecarioFrame extends JFrame {
 		JMenu menuLeitor = new JMenu("Leitor");
 		Icon iconeLeitor = new ImageIcon("src/aplicacao/icones/iconeLeitor.png");
 		menuLeitor.setIcon(iconeLeitor);
-		menuLeitor.setFont(new Font("Calibre", Font.BOLD, 18));
 		
 		//Instanciando imagens dos icones
 		Icon icone1 = new ImageIcon("src/aplicacao/icones/iconCadLeitor.png");
@@ -74,31 +87,29 @@ public class BibliotecarioFrame extends JFrame {
 		JMenuItem menuItemRemoverLeitor = new JMenuItem("Remover", icone4);
 		menuLeitor.add(menuItemRemoverLeitor);
 
-		// Menu Empr�stimo
-		JMenu menuEmprestimo = new JMenu("Emprestimo");
+		// Menu Emprestimo
+		JMenu menuEmprestimo = new JMenu("Empréstimo");
 		Icon iconeEmprestimo = new ImageIcon("src/aplicacao/icones/iconeEmprestimo.png");
 		menuEmprestimo.setIcon(iconeEmprestimo);
-		menuEmprestimo.setFont(new Font("Calibre", Font.BOLD, 18));
 
-		JMenuItem menuItemEmprestimo = new JMenuItem("Efetuar Emprestimo", icone7);
+		JMenuItem menuItemEmprestimo = new JMenuItem("Efetuar Empréstimo", icone7);
 		menuEmprestimo.add(menuItemEmprestimo);
 		
-		JMenuItem menuItemDevolucao = new JMenuItem("Registrar Devolucao", icone8);
+		JMenuItem menuItemDevolucao = new JMenuItem("Registrar Devolução", icone8);
 		menuEmprestimo.add(menuItemDevolucao);
 		
-		JMenuItem menuItemBuscarEmprestimo = new JMenuItem("Buscar Emprestimo", icone5);
+		JMenuItem menuItemBuscarEmprestimo = new JMenuItem("Buscar Empréstimo", icone5);
 		menuEmprestimo.add(menuItemBuscarEmprestimo);
 		
-		JMenuItem menuItemListarEmprestimos = new JMenuItem("Listar Emprestimos", icone6);
+		JMenuItem menuItemListarEmprestimos = new JMenuItem("Listar Empréstimos", icone6);
 		menuEmprestimo.add(menuItemListarEmprestimos);
 
 		// Menu Pesquisar Livro
 		JMenu menuPesquisarLivro = new JMenu("Pesquisar Livro");
 		Icon iconeLivro = new ImageIcon("src/aplicacao/icones/iconBuscarLivro.png");
 		menuPesquisarLivro.setIcon(iconeLivro);
-		menuPesquisarLivro.setFont(new Font("Calibre", Font.BOLD, 18));
 
-		JMenuItem menuItemTitulo = new JMenuItem("Titulo", icone9);
+		JMenuItem menuItemTitulo = new JMenuItem("Título", icone9);
 		menuPesquisarLivro.add(menuItemTitulo);
 
 		JMenuItem menuItemAutor = new JMenuItem("Autor", icone10);
@@ -158,6 +169,67 @@ public class BibliotecarioFrame extends JFrame {
 		barra.add(menuLeitor);
 		barra.add(menuEmprestimo);
 		barra.add(menuPesquisarLivro);
+		customizeMenuBar(barra);
 
+	}
+	
+	private void customizeMenuBar(JMenuBar menuBar) {
+
+	    menuBar.setUI(new BasicMenuBarUI() {
+
+	        @Override
+	        public void paint(Graphics g, JComponent c) {
+	        	Color c2 = new Color(79,78,71);   
+	            g.setColor(c2);
+	            g.fillRect(0, 0, c.getWidth(), c.getHeight());
+	        }
+
+	    });
+
+	    MenuElement[] menus = menuBar.getSubElements();
+
+	    for (MenuElement menuElement : menus) {
+
+	        JMenu menu = (JMenu) menuElement.getComponent();
+	        changeComponentColors(menu);
+	        menu.setOpaque(true);
+
+	        MenuElement[] menuElements = menu.getSubElements();
+
+	        for (MenuElement popupMenuElement : menuElements) {
+
+	            JPopupMenu popupMenu = (JPopupMenu) popupMenuElement.getComponent();
+	            popupMenu.setBorder(null);
+
+	            MenuElement[] menuItens = popupMenuElement.getSubElements();
+
+	            for (MenuElement menuItemElement : menuItens) {
+
+	                JMenuItem menuItem = (JMenuItem) menuItemElement.getComponent();
+	                changeComponentColors(menuItem);
+	                menuItem.setOpaque(true);
+
+	            }
+	        }
+	    }
+	}
+
+	private void changeComponentColors(Component comp) {
+		Color c = new Color(79,78,71);   
+	    comp.setBackground(c);
+	    comp.setForeground(Color.white);
+	}
+	
+	public void setDefaultFont(Font defaultFont) {
+
+		FontUIResource font = new FontUIResource(defaultFont);
+
+		Enumeration<?> uiManagerKeys = UIManager.getDefaults().keys();
+		while (uiManagerKeys.hasMoreElements()) {
+			Object key = uiManagerKeys.nextElement(), value = UIManager.get(key);
+
+			if (null != value && value instanceof FontUIResource)
+				UIManager.put(key, font);
+		}
 	}
 }

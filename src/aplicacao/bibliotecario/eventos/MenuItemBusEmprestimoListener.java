@@ -7,15 +7,18 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import logica.Emprestimo;
 import aplicacao.FacadeBibliotecario;
@@ -27,7 +30,7 @@ public class MenuItemBusEmprestimoListener implements ActionListener {
 		JFrame removerFrame = new JFrame();
 		removerFrame.setTitle("Sistema DigiTeca - Buscar Emprestimo");
 		removerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		removerFrame.setLocation(200, 200);
+		removerFrame.setLocation(400, 200);
 		
 		//Container
 		Container ct = removerFrame.getContentPane();
@@ -40,8 +43,21 @@ public class MenuItemBusEmprestimoListener implements ActionListener {
 		painel.setBackground(Color.white);
 
 		//Rotulo e campo de texto
+		// Mascaras
+		MaskFormatter mascaraCpf = null;
+
+		try {
+			mascaraCpf = new MaskFormatter("###.###.###-##");
+			mascaraCpf.setPlaceholderCharacter('_');
+		} catch (ParseException excp) {
+			JOptionPane.showMessageDialog(null, excp.getMessage());
+			System.exit(-1);
+		}
+
+		// Seta as máscaras nos objetos JFormattedTextField
+		JFormattedTextField campoVerificacao  = new JFormattedTextField(mascaraCpf);
+		
 		JLabel verificacao = new JLabel("Digite o CPF do Leitor para a busca:");
-		JTextField campoVerificacao = new JTextField(10);
 		painel.add(verificacao);
 		painel.add(campoVerificacao);
 
@@ -106,7 +122,7 @@ public class MenuItemBusEmprestimoListener implements ActionListener {
 				JFrame resultadoFrame = new JFrame();
 				resultadoFrame.setTitle("Sistema DigiTeca - Dados da Emprestimo");
 				resultadoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				resultadoFrame.setLocation(200, 200);
+				resultadoFrame.setLocation(400, 200);
 				
 				Container ct = resultadoFrame.getContentPane();
 				ct.setLayout(new BorderLayout());
