@@ -9,16 +9,20 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import aplicacao.FacadeAdministrador;
 import aplicacao.eventos_sistema.BotaoCancelarListener;
@@ -57,7 +61,20 @@ public class MenuItemCadLivroListener implements ActionListener{
 		panelWest.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
 		panelWest.setBackground(Color.WHITE);
 
-		//Rotulos e campos
+		// Rotulos e campos
+		MaskFormatter mascaraIsbn = null;
+
+		try {
+			mascaraIsbn = new MaskFormatter("###-##-###-####-#");
+			mascaraIsbn.setPlaceholderCharacter('_');
+		} catch (ParseException excp) {
+			JOptionPane.showMessageDialog(null, excp.getMessage());
+			System.exit(-1);
+		}
+
+		// Seta as máscaras nos objetos JFormattedTextField
+		JFormattedTextField campoIsbn = new JFormattedTextField(mascaraIsbn);
+
 		JLabel titulo = new JLabel("Título:");
 		JTextField campoTitulo = new JTextField(30);
 		cst.fill = GridBagConstraints.HORIZONTAL;
@@ -69,7 +86,6 @@ public class MenuItemCadLivroListener implements ActionListener{
 		painel.add(campoTitulo,cst);
 		
 		JLabel isbn = new JLabel("ISBN:");
-		JTextField campoIsbn = new JTextField(30);
 		cst.fill = GridBagConstraints.HORIZONTAL;
 	    cst.gridx = 0;
 	    cst.gridy = 1;

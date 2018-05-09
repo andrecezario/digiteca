@@ -3,6 +3,7 @@ package aplicacao.bibliotecario.eventos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +42,7 @@ public class BuscarLivrosListener implements ActionListener {
 		JFrame listaLivrosFrame = new JFrame();
 		listaLivrosFrame .setTitle("Sistema DigiTeca - Resultado da Busca");
 		listaLivrosFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		listaLivrosFrame.setLocation(350, 0);
+		listaLivrosFrame.setLocation(400, 0);
 
 		// Container
 		Container ct = listaLivrosFrame.getContentPane();
@@ -58,7 +59,7 @@ public class BuscarLivrosListener implements ActionListener {
 		// Criando os dados da tabela
 		ArrayList<Livro> livrosArray = fachadaBiblio.buscarLivro(tipoBusca, itemBusca.getText());
 		
-		Object[] colunas = new Object[]{"ISBN" , "Titulo" ,"Tipo","Categoria","Autor","N Edicao","N Paginas","ID Estante","Status"};
+		Object[] colunas = new Object[]{"ISBN" , "Título" ,"Tipo","Categoria","Autor","Nº Edição","Nº Páginas","ID Estante","Status"};
 		
 		Object[][] valores = new Object[livrosArray.size()][9];
 		for (int i = 0; i <livrosArray.size(); i++) {
@@ -110,7 +111,6 @@ public class BuscarLivrosListener implements ActionListener {
 		
 		//Tabela
 		JTable tabelaLivros = new JTable(valores,colunas);
-		tabelaLivros.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
 
 		// Mostrar bordas da tabela
 		tabelaLivros.setBorder(new LineBorder(Color.black));
@@ -118,31 +118,42 @@ public class BuscarLivrosListener implements ActionListener {
 		tabelaLivros.setShowGrid(true);
 		
 		// Adicionar rolagem (scroll) para tabela
-		JScrollPane rolagem = new JScrollPane();
-		rolagem.getViewport().setBorder(null);
-		rolagem.getViewport().add(tabelaLivros);
-		rolagem.setSize(500, 500);
+		JScrollPane rolagem = new JScrollPane();			
+		rolagem.setViewportView(tabelaLivros);
 		
-		// Adicionando a tabela ao painel
-		painelTabela.add(rolagem);
-		
-		//Bot�es
+		//Botoes
 		Icon iconeFechar = new ImageIcon("src/aplicacao/icones/iconeRemover.png");
 		JButton botaoFechar = new JButton("Fechar", iconeFechar);
 		painelBotoes.add(botaoFechar);
 		
-		//R�tulo
+		//Rotulo
 		Icon iconeRotulo = new ImageIcon("src/aplicacao/icones/rotResultadoLivros.png");
 		JLabel rotImagem = new JLabel(iconeRotulo);
 		
+		// Borda
+		int tamanho_borda = 30;
+
+		JPanel panelEast = new JPanel();
+		panelEast.setOpaque(true);
+		panelEast.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+		panelEast.setBackground(Color.WHITE);
+
+		JPanel panelWest = new JPanel();
+		panelWest.setOpaque(true);
+		panelWest.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+		panelWest.setBackground(Color.WHITE);
+
 		ct.add(rotImagem, BorderLayout.NORTH);
-		ct.add(painelTabela,BorderLayout.CENTER);
-		ct.add(painelBotoes,BorderLayout.SOUTH);
+		ct.add(rolagem, BorderLayout.CENTER);
+		ct.add(panelWest, BorderLayout.WEST);
+		ct.add(panelEast, BorderLayout.EAST);
+		ct.add(painelBotoes, BorderLayout.SOUTH);
 		
 		listaLivrosFrame.pack();
 		listaLivrosFrame.setVisible(true);
+		listaLivrosFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
-		//Tratando o evento do bot�o fechar
+		//Tratando o evento do botao fechar
 		BotaoCancelarListener ouvinteFechar = new BotaoCancelarListener(listaLivrosFrame);
 		botaoFechar.addActionListener(ouvinteFechar);
 		

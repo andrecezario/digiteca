@@ -174,7 +174,7 @@ public class LivroDAO {
 	}
 
 	// Sem showMessage
-	private ArrayList<Livro> buscarLivroStatus(String status) {
+	public ArrayList<Livro> buscarLivroStatus(String status) {
 		try {
 			banco.abreConexao();
 			String sql = "Select * from livro where status='" + status + "'";
@@ -206,7 +206,7 @@ public class LivroDAO {
 	}
 
 	// Sem showMessage
-	private ArrayList<Livro> buscarLivroTitulo(String titulo) {
+	public ArrayList<Livro> buscarLivroTitulo(String titulo) {
 		try {
 			banco.abreConexao();
 			String sql = "Select * from livro where titulo='" + titulo + "'";
@@ -240,7 +240,7 @@ public class LivroDAO {
 	}
 
 	// Sem showMessage
-	private ArrayList<Livro> buscarLivroAutor(String autor) {
+	public ArrayList<Livro> buscarLivroAutor(String autor) {
 		try {
 			banco.abreConexao();
 			String sql = "Select * from livro where autor='" + autor + "'";
@@ -273,7 +273,7 @@ public class LivroDAO {
 	}
 
 	// Sem showMessage
-	private ArrayList<Livro> buscarLivroIdEstante(String idEstante) {
+	public ArrayList<Livro> buscarLivroIdEstante(String idEstante) {
 		Livro l = new Livro();
 		try {
 			banco.abreConexao();

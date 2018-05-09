@@ -3,21 +3,26 @@ package aplicacao.administrador.eventos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.text.MaskFormatter;
 
 import logica.Livro;
 import aplicacao.FacadeAdministrador;
@@ -44,8 +49,20 @@ public class MenuItemLivrosEstanteListener implements ActionListener {
 		painel.setBackground(Color.white);
 
 		//Rotulo e campo de texto
+		MaskFormatter mascaraId = null;
+
+		try {
+			mascaraId = new MaskFormatter("U-###");
+			mascaraId.setPlaceholderCharacter('_');
+		} catch (ParseException excp) {
+			JOptionPane.showMessageDialog(null, excp.getMessage());
+			System.exit(-1);
+		}
+
+		// Seta as máscaras nos objetos JFormattedTextField
+		JFormattedTextField campoVerificacao = new JFormattedTextField(mascaraId);
+		
 		JLabel verificacao = new JLabel("Digite o ID do estante para listar os livros:");
-		final JTextField campoVerificacao = new JTextField(10);
 		painel.add(verificacao);
 		painel.add(campoVerificacao);
 
@@ -118,7 +135,7 @@ public class MenuItemLivrosEstanteListener implements ActionListener {
 			// Criando os dados da tabela
 			ArrayList<Livro> livrosArray = fachadaAdm.listarLivrosEstante(campoVerificacao.getText());
 			
-			Object[] colunas = new Object[]{"ISBN" , "Titulo" ,"Tipo","Categoria","Autor","N� Edicao","N� Paginas","ID Estante","Status"};
+			Object[] colunas = new Object[]{"ISBN" , "Título" ,"Tipo","Categoria","Autor","Nº Edição","Nº Paginas","ID Estante","Status"};
 			
 			Object[][] valores = new Object[livrosArray.size()][9];
 			for (int i = 0; i <livrosArray.size(); i++) {
@@ -170,7 +187,7 @@ public class MenuItemLivrosEstanteListener implements ActionListener {
 			
 			//Tabela
 			JTable tabelaLivros = new JTable(valores,colunas);
-			tabelaLivros.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
+			//tabelaLivros.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
 
 			// Mostrar bordas da tabela
 			tabelaLivros.setBorder(new LineBorder(Color.black));
@@ -178,12 +195,8 @@ public class MenuItemLivrosEstanteListener implements ActionListener {
 			tabelaLivros.setShowGrid(true);
 			
 			// Adicionar rolagem (scroll) para tabela
-			JScrollPane rolagem = new JScrollPane();
-			rolagem.getViewport().setBorder(null);
-			rolagem.getViewport().add(tabelaLivros);
-			rolagem.setSize(500, 500);
-			
-			painelTabela.add(rolagem);
+			JScrollPane rolagem = new JScrollPane();			
+			rolagem.setViewportView(tabelaLivros);
 			
 			//Botoes
 			Icon iconeFechar = new ImageIcon("src/aplicacao/icones/iconeRemover.png");
@@ -194,17 +207,33 @@ public class MenuItemLivrosEstanteListener implements ActionListener {
 			Icon iconeRotulo = new ImageIcon("src/aplicacao/icones/rotResultadoLivros.png");
 			JLabel rotImagem = new JLabel(iconeRotulo);
 			
+			// Borda
+			int tamanho_borda = 30;
+
+			JPanel panelEast = new JPanel();
+			panelEast.setOpaque(true);
+			panelEast.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+			panelEast.setBackground(Color.WHITE);
+
+			JPanel panelWest = new JPanel();
+			panelWest.setOpaque(true);
+			panelWest.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+			panelWest.setBackground(Color.WHITE);
+			
 			ct.add(rotImagem, BorderLayout.NORTH);
-			ct.add(painelTabela,BorderLayout.CENTER);
+			ct.add(rolagem,BorderLayout.CENTER);
+			ct.add(panelWest, BorderLayout.WEST);
+			ct.add(panelEast, BorderLayout.EAST);
 			ct.add(painelBotoes,BorderLayout.SOUTH);
 			
 			listaLivrosFrame.pack();
 			listaLivrosFrame.setVisible(true);
+			listaLivrosFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			
 			//Fechar janela anterior	
 			janela.dispose();
 			
-			//Tratando o evento do botoo fechar
+			//Tratando o evento do botao fechar
 			BotaoCancelarListener ouvinteFechar = new BotaoCancelarListener(listaLivrosFrame);
 			botaoFechar.addActionListener(ouvinteFechar);
 			

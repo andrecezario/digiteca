@@ -3,9 +3,11 @@ package aplicacao;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -15,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 import aplicacao.eventos_sistema.BotaoCancelarListener;
 import aplicacao.eventos_sistema.BotaoEntrarListener;
@@ -25,7 +29,8 @@ public class BibliotecaGUI {
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setLocation(350,30);
 		janela.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("iconApp.png")));
-
+		Font font = new Font("Arial", Font.PLAIN, 14);
+		setDefaultFont(font);
 		Container ct1 = new JFrame().getContentPane();
 		ct1.setLayout(new BorderLayout());
 		Container ctPrincipal = janela.getContentPane();
@@ -142,5 +147,18 @@ public class BibliotecaGUI {
 	
 	public static void main(String[] args) {
 		BibliotecaGUI minhaAplicacao = new BibliotecaGUI();
+	}
+	
+	public void setDefaultFont(Font defaultFont) {
+
+		FontUIResource font = new FontUIResource(defaultFont);
+
+		Enumeration<?> uiManagerKeys = UIManager.getDefaults().keys();
+		while (uiManagerKeys.hasMoreElements()) {
+			Object key = uiManagerKeys.nextElement(), value = UIManager.get(key);
+
+			if (null != value && value instanceof FontUIResource)
+				UIManager.put(key, font);
+		}
 	}
 }

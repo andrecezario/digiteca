@@ -3,6 +3,7 @@ package aplicacao.bibliotecario.eventos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +26,7 @@ public class MenuItemBusLivroTituloListener implements ActionListener{
 		JFrame buscarFrame = new JFrame();
 		buscarFrame.setTitle("Sistema DigiTeca - Pesquisar Livro por Titulo");
 		buscarFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		buscarFrame.setLocation(200,200);
+		buscarFrame.setLocation(300,200);
 		
 		//Container
 		Container ct = buscarFrame.getContentPane();
@@ -58,8 +59,23 @@ public class MenuItemBusLivroTituloListener implements ActionListener{
 		painelBotoes.add(botaoBuscar);
 		painelBotoes.setBackground(Color.white);
 		
+		
+		// Borda
+		int tamanho_borda = 30;
+		JPanel panelEast = new JPanel();
+		panelEast.setOpaque(true);
+		panelEast.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+		panelEast.setBackground(Color.WHITE);
+
+		JPanel panelWest = new JPanel();
+		panelWest.setOpaque(true);
+		panelWest.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+		panelWest.setBackground(Color.WHITE);
+		
 		//Adicionando os componentes ao container
 		ct.add(rotImagem, BorderLayout.NORTH);
+		ct.add(panelWest, BorderLayout.WEST);
+		ct.add(panelEast, BorderLayout.EAST);
 		ct.add(painelTexto, BorderLayout.CENTER);
 		ct.add(painelBotoes, BorderLayout.SOUTH);
 

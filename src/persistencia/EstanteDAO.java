@@ -9,12 +9,16 @@ import logica.Categoria;
 import logica.Estante;
 import logica.Livro;
 
+import persistencia.CategoriaDAO;
+import persistencia.EstanteDAO;
+import persistencia.LivroDAO;
+
 public class EstanteDAO {
 
 	private Banco banco = new Banco();
 	private ArrayList<Livro> livrosEstante = new ArrayList<Livro>();
 	private CategoriaDAO cDAO = new CategoriaDAO();
-//	private LivroDAO lDAO = new LivroDAO();
+    //public LivroDAO livroDAO = new LivroDAO();
 
 	public boolean adicionarLivroEstante(String isbn, String idEstante) {
 		String sql;
@@ -33,7 +37,7 @@ public class EstanteDAO {
 				l.setAutor(rs.getString("autor"));
 				l.setNumeroEdicao(rs.getInt("edicao"));
 				l.setNumeroPaginas(rs.getInt("num_paginas"));
-				l.getEstante().setIdEstante(rs.getString("id_estante"));
+				l.setEstante(e);
 				l.setStatus(rs.getString("status"));
 				if (e.getCategoria().getIdCategoria().equals(l.getCategoria().getIdCategoria())) {
 					l.setEstante(e);
@@ -46,7 +50,7 @@ public class EstanteDAO {
 					return true;
 				} 
 				else {
-				JOptionPane.showMessageDialog(null, "Não é possível adicionar o livro, porque ele não foi encontrado no sistema!", "ERRO", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Não foi possível adicionar o livro, porque ele não pertence a categoria da estante!", "ERRO", JOptionPane.ERROR_MESSAGE);
 				return false;}
 			}else{
 				System.out.println("nao foi");
@@ -186,8 +190,7 @@ public class EstanteDAO {
 					+ "'";
 			ResultSet rs = banco.query(sql);
 			while (rs.next()) {
-				l.getEstante().setIdEstante(null);
-				livrosEstante.remove(rs);
+				this.removerLivroEstante(rs.getString("isbn"), idEstante);
 			}
 			JOptionPane.showMessageDialog(null, "A limpeza foi realizada com sucesso!", "Estante", JOptionPane.DEFAULT_OPTION);
 		} catch (Exception e) {
@@ -220,21 +223,39 @@ public class EstanteDAO {
 	}
 	//Sem showMessage
 	public ArrayList<Livro> listarLivrosEstante(String id) {
-		ArrayList<Livro> listaLivrosEstante = new ArrayList<Livro>();
+		
+		ArrayList<Livro> listaLivros = new ArrayList<Livro>();
 		try {
 			banco.abreConexao();
-			for (Livro l : livrosEstante) {
-				l.getEstante().getIdEstante().equals(id);
+			String sql = "Select * from livro where id_estante='" + id
+					+ "'";
+			ResultSet rs = banco.query(sql);
+			while (rs.next()) {
+				Categoria c = cDAO.buscarCategoriaId(rs
+						.getString("id_categoria"));
+				Estante e = this.buscarEstante(rs.getString("id_estante"));
+				Livro l = new Livro();
+				l.setTitulo(rs.getString("titulo"));
+				l.setCategoria(c);
+				l.setTipo(rs.getString("tipo"));
+				l.setIsbn(rs.getString("isbn"));
+				l.setAutor(rs.getString("autor"));
+				l.setNumeroEdicao(rs.getInt("edicao"));
+				l.setNumeroPaginas(rs.getInt("num_paginas"));
+				l.setStatus(rs.getString("status"));
+				l.setEstante(e);
+				listaLivros.add(l);
 				System.out.println(l);
-				listaLivrosEstante.add(l);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		} finally {
 			banco.fechaConexao();
 		}
-		return listaLivrosEstante;
+		
+		return listaLivros;
 	}
 
 }

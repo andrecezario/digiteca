@@ -32,7 +32,6 @@ public class BotaoEntrarListener implements ActionListener {
 		this.login = login;
 		this.senha = senha;
 		this.janela = janela;
-
 	}
 
 	@Override

@@ -96,7 +96,6 @@ public class FacadeAdministrador {
 		}
 	}
 
-
 	public void removerBibliotecario(String cpf) {
 		try{
 			bibliDAO.removerBibliotecario(cpf);
@@ -170,25 +169,26 @@ public class FacadeAdministrador {
 
 	public void adicionarLivroEstante(String isbn,String idEstante) {
 		Livro l = livroDAO.buscarLivroIsbn(isbn);
+		
 		try{
-			if(l.getEstante().getIdEstante().equals(null)){
-				eDAO.adicionarLivroEstante(isbn, idEstante);
-			}else{
+			if(l.getEstante().getIdEstante().equals(idEstante)){
 				JOptionPane.showMessageDialog(null, "O livro já está associado a uma estante!", "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
+			else if(!l.getEstante().getIdEstante().equals(idEstante)){
+				JOptionPane.showMessageDialog(null, "O livro já está associado a outra estante!", "ERRO",
+						JOptionPane.ERROR_MESSAGE);
+			}
 		}catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
-					JOptionPane.ERROR_MESSAGE);
-			System.out.println("AQUI");
+			eDAO.adicionarLivroEstante(isbn, idEstante);
 		}
 	}
 
 	public void removerLivroEstante(String isbn,String idEstante) {
 		Livro l = livroDAO.buscarLivroIsbn(isbn);
 		try{
-			if(l.getEstante().getIdEstante().equals(null)){
-				JOptionPane.showMessageDialog(null, "Voce está passando um livro que não está associado a uma estante", "ERRO",
+			if(l.getEstante() == null){
+				JOptionPane.showMessageDialog(null, "Você está passando um livro que não está associado a uma estante", "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}else{
 				eDAO.removerLivroEstante(l.getIsbn(), idEstante);
@@ -252,7 +252,7 @@ public class FacadeAdministrador {
 	public ArrayList<Livro> listarLivrosEstante(String idEstante) {
 		ArrayList<Livro> listaLivrosEstante = new ArrayList<Livro>();
 		try {
-			listaLivrosEstante = eDAO.listarLivrosEstante("idEstante");
+			listaLivrosEstante = eDAO.listarLivrosEstante(idEstante);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
 					JOptionPane.ERROR_MESSAGE);

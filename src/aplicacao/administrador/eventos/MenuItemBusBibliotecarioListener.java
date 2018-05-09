@@ -10,17 +10,20 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.text.MaskFormatter;
 
 import logica.Funcionario;
 import aplicacao.FacadeAdministrador;
@@ -46,17 +49,29 @@ public class MenuItemBusBibliotecarioListener implements ActionListener {
 		painel.setBackground(Color.white);
 
 		//Rotulo e campo de texto
+		MaskFormatter mascaraCpf = null;
+
+		try {
+			mascaraCpf = new MaskFormatter("###.###.###-##");
+			mascaraCpf.setPlaceholderCharacter('_');
+		} catch (ParseException excp) {
+			JOptionPane.showMessageDialog(null, excp.getMessage());
+			System.exit(-1);
+		}
+
+		// Seta as máscaras nos objetos JFormattedTextField
+		JFormattedTextField campoVerificacao = new JFormattedTextField(mascaraCpf);
+		
 		JLabel verificacao = new JLabel("Digite o CPF do bibliotecario que deseja buscar:");
-		final JTextField campoVerificacao = new JTextField(10);
 		painel.add(verificacao);
 		painel.add(campoVerificacao);
 
-		//Icone do r�tulo incial (Buscar bibliotecario)
+		//Icone do rotulo incial (Buscar bibliotecario)
 		Icon iconeRotulo = new ImageIcon("src/aplicacao/icones/rotBusBibliotecario.png");
 		JLabel rotulo = new JLabel(iconeRotulo);
 		rotulo.setBackground(Color.white);
 
-		//Bot�es de buscar ou cancelar
+		//Botoes de buscar ou cancelar
 		JPanel painelBotoes = new JPanel();
 		Icon icone1 = new ImageIcon("src/aplicacao/icones/iconeEntrar.png");
 		Icon icone2 = new ImageIcon("src/aplicacao/icones/iconeRemover.png");

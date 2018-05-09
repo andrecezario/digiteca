@@ -3,6 +3,7 @@ package aplicacao.bibliotecario.eventos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,13 +31,13 @@ public class MenuItemListEmprestimosListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Janela
-		JFrame listaLivrosFrame = new JFrame();
-		listaLivrosFrame .setTitle("Sistema DigiTeca - Resultado da Busca");
-		listaLivrosFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		listaLivrosFrame.setLocation(350, 0);
+		JFrame listaEmprestimosFrame = new JFrame();
+		listaEmprestimosFrame.setTitle("Sistema DigiTeca - Resultado da Busca");
+		listaEmprestimosFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		listaEmprestimosFrame.setLocation(350, 0);
 
 		// Container
-		Container ct = listaLivrosFrame.getContentPane();
+		Container ct = listaEmprestimosFrame.getContentPane();
 		ct.setLayout(new BorderLayout());
 		ct.setBackground(Color.white);
 
@@ -50,7 +51,7 @@ public class MenuItemListEmprestimosListener implements ActionListener {
 		//Encontrando os valores da tabela
 		ArrayList<Emprestimo> emprestimosArray = fachadaBiblio.listarEmprestimos();
 		
-		Object[] colunas = new Object[]{"CPF Leitor" ,"ISBN Livro","CPF Bibliotecario","Data Emprestimo","Data Devolucao",};
+		Object[] colunas = new Object[]{"CPF Leitor" ,"ISBN Livro","CPF Bibliotecário","Data Empréstimo","Data Devolução",};
 		
 		Object[][] valores = new Object[emprestimosArray.size()][5];
 		for (int i = 0; i <emprestimosArray.size(); i++) {
@@ -89,40 +90,51 @@ public class MenuItemListEmprestimosListener implements ActionListener {
 			}
 		}
 		
-		//Tabela
-		JTable tabelaEmprestimos = new JTable(valores,colunas);
-		tabelaEmprestimos.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
+		// Tabela
+		JTable tabelaLivros = new JTable(valores, colunas);
 
 		// Mostrar bordas da tabela
-		tabelaEmprestimos.setBorder(new LineBorder(Color.black));
-		tabelaEmprestimos.setGridColor(Color.black);
-		tabelaEmprestimos.setShowGrid(true);
-				
+		tabelaLivros.setBorder(new LineBorder(Color.black));
+		tabelaLivros.setGridColor(Color.black);
+		tabelaLivros.setShowGrid(true);
+
 		// Adicionar rolagem (scroll) para tabela
 		JScrollPane rolagem = new JScrollPane();
-		rolagem.getViewport().setBorder(null);
-		rolagem.getViewport().add(tabelaEmprestimos);
-		rolagem.setSize(500, 500);
-		
-		painelTabela.add(rolagem);
-		//Bot�es
+		rolagem.setViewportView(tabelaLivros);
+		// Botoes
 		Icon iconeFechar = new ImageIcon("src/aplicacao/icones/iconeRemover.png");
 		JButton botaoFechar = new JButton("Fechar", iconeFechar);
 		painelBotoes.add(botaoFechar);
-		
-		//R�tulo
+
+		//Rotulo
 		Icon iconeRotulo = new ImageIcon("src/aplicacao/icones/rotResultadoEmprestimos.png");
 		JLabel rotImagem = new JLabel(iconeRotulo);
 		
+		// Borda
+		int tamanho_borda = 30;
+
+		JPanel panelEast = new JPanel();
+		panelEast.setOpaque(true);
+		panelEast.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+		panelEast.setBackground(Color.WHITE);
+
+		JPanel panelWest = new JPanel();
+		panelWest.setOpaque(true);
+		panelWest.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+		panelWest.setBackground(Color.WHITE);
+
 		ct.add(rotImagem, BorderLayout.NORTH);
-		ct.add(painelTabela,BorderLayout.CENTER);
-		ct.add(painelBotoes,BorderLayout.SOUTH);
+		ct.add(rolagem, BorderLayout.CENTER);
+		ct.add(panelWest, BorderLayout.WEST);
+		ct.add(panelEast, BorderLayout.EAST);
+		ct.add(painelBotoes, BorderLayout.SOUTH);
 		
-		listaLivrosFrame.pack();
-		listaLivrosFrame.setVisible(true);
+		listaEmprestimosFrame.pack();
+		listaEmprestimosFrame.setVisible(true);
+		listaEmprestimosFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
-		//Tratando o evento do bot�o fechar
-		BotaoCancelarListener ouvinteFechar = new BotaoCancelarListener(listaLivrosFrame);
+		//Tratando o evento do botao fechar
+		BotaoCancelarListener ouvinteFechar = new BotaoCancelarListener(listaEmprestimosFrame);
 		botaoFechar.addActionListener(ouvinteFechar);
 	}
 

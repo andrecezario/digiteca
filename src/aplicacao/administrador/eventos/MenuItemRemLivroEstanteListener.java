@@ -7,14 +7,18 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import aplicacao.FacadeAdministrador;
 import aplicacao.eventos_sistema.BotaoCancelarListener;
@@ -46,17 +50,32 @@ public class MenuItemRemLivroEstanteListener implements ActionListener {
 		panelWest.setBackground(Color.WHITE);
 
 		// Painel Texto
+		MaskFormatter mascaraIsbn = null;
+		MaskFormatter mascaraId = null;
+
+		try {
+			mascaraIsbn = new MaskFormatter("###-##-###-####-#");
+			mascaraId = new MaskFormatter("U-###");
+			mascaraIsbn.setPlaceholderCharacter('_');
+			mascaraId.setPlaceholderCharacter('_');
+		} catch (ParseException excp) {
+			JOptionPane.showMessageDialog(null, excp.getMessage());
+			System.exit(-1);
+		}
+
+		// Seta as máscaras nos objetos JFormattedTextField
+		JFormattedTextField campoIdEstante = new JFormattedTextField(mascaraId);
+		JFormattedTextField campoIsbn = new JFormattedTextField(mascaraIsbn);
+		
 		JPanel painel = new JPanel();
 		painel.setLayout(new FlowLayout());
 		painel.setBackground(Color.white);
 
 		JLabel idEstante = new JLabel("Digite o ID da estante:");
-		JTextField campoIdEstante = new JTextField(10);
 		painel.add(idEstante);
 		painel.add(campoIdEstante);
 
 		JLabel isbn = new JLabel("Digite o ISBN do livro:");
-		JTextField campoIsbn = new JTextField(10);
 		painel.add(isbn);
 		painel.add(campoIsbn);
 

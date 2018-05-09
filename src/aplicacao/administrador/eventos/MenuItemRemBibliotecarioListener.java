@@ -6,14 +6,18 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import aplicacao.FacadeAdministrador;
 import aplicacao.eventos_sistema.BotaoCancelarListener;
@@ -38,8 +42,20 @@ public class MenuItemRemBibliotecarioListener implements ActionListener {
 		painel.setBackground(Color.white);
 
 		//Rotulo e campo de texto
+		MaskFormatter mascaraCpf = null;
+
+		try {
+			mascaraCpf = new MaskFormatter("###.###.###-##");
+			mascaraCpf.setPlaceholderCharacter('_');
+		} catch (ParseException excp) {
+			JOptionPane.showMessageDialog(null, excp.getMessage());
+			System.exit(-1);
+		}
+
+		// Seta as máscaras nos objetos JFormattedTextField
+		JFormattedTextField campoVerificacao = new JFormattedTextField(mascaraCpf);
+		
 		JLabel verificacao = new JLabel("Digite o CPF do bibliotecário que deseja remover:");
-		final JTextField campoVerificacao = new JTextField(10);
 		painel.add(verificacao);
 		painel.add(campoVerificacao);
 

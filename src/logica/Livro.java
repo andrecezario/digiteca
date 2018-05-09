@@ -24,6 +24,7 @@ public class Livro {
 		this.autor = autor;
 		this.numeroEdicao = numeroEdicao;
 		this.numeroPaginas = numeroPaginas;
+		this.estante = new Estante();
 	}
 
 	public Estante getEstante(){
