@@ -112,8 +112,8 @@ public class MenuItemBusEstanteListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Estante estante = fachadaAdm.buscarEstante(campoTexto.getText());
-			if(estante.getIdEstante().equals(null)) { //Quer dizer que nao existe uma estante com esse numero de ID no sistema
-				JOptionPane.showMessageDialog(null,"Estante nao encontrada!", "ERRO", JOptionPane.ERROR_MESSAGE);
+			if(estante.getIdEstante() == null) { //Quer dizer que nao existe uma estante com esse numero de ID no sistema
+				JOptionPane.showMessageDialog(null,"Estante não encontrada!", "ERRO", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
 				//Fechando a janela anterior para mostrar o resultado

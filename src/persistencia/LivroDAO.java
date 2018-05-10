@@ -142,7 +142,7 @@ public class LivroDAO {
 		Livro l = new Livro();
 		try {
 			banco.abreConexao();
-			String sql = "Select * from livro where ISBN ='" + isbn + "'";
+			String sql = "Select * from livro where isbn ='" + isbn + "'";
 			ResultSet rs = banco.query(sql);
 			if (rs.next()) {
 				Categoria c = cDAO.buscarCategoriaId(rs

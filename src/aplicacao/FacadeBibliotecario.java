@@ -48,9 +48,9 @@ public class FacadeBibliotecario {
 		Bibliotecario b = bDAO.buscarBibliotecario(cpfBibliotecario);
 		Livro livro = lDAO.buscarLivroIsbn(isbn);
 		try {
-			leitor.setCpf(cpfLeitor);
-			b.setCpf(cpfBibliotecario);
-			livro.setIsbn(isbn);
+			//leitor.setCpf(cpfLeitor);
+			//b.setCpf(cpfBibliotecario);
+			//livro.setIsbn(isbn);
 			Date data = new Date();
 			Emprestimo e = new Emprestimo(FacadeBibliotecario.data(data),
 					FacadeBibliotecario.dataFormatada(data), livro, leitor, b);
@@ -98,7 +98,7 @@ public class FacadeBibliotecario {
 		try {
 			listaEmprestimos = eDAO.listarEmprestimos();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
+			JOptionPane.showMessageDialog(null, "Erro no facadeBiblio", "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 		}
 		return listaEmprestimos;

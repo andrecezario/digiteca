@@ -57,7 +57,7 @@ public class EstanteDAO {
 				return false;
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage() + "NAO FOI", "ERRO", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} finally {
 			banco.fechaConexao();
@@ -207,11 +207,14 @@ public class EstanteDAO {
 			banco.abreConexao();
 			String sql = "Select id, id_categoria from estante where id='" + idEstante + "'";
 			ResultSet rs = banco.query(sql);
-			while (rs.next()) {
+			if(rs.next()) {
 				Categoria c = cDAO.buscarCategoriaId(rs.getString("id_categoria"));
 				e.setIdEstante(rs.getString("id"));
 				e.setCategoria(c);
 				System.out.println(e);
+			}else{
+				JOptionPane.showMessageDialog(null, "Este id não existe no sistema!", "ERRO",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception ee) {
 			JOptionPane.showMessageDialog(null, ee.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);

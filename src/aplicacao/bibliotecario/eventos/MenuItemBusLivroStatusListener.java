@@ -82,11 +82,11 @@ public class MenuItemBusLivroStatusListener implements ActionListener{
 		buscarFrame.setResizable(false);
 		buscarFrame.setVisible(true);
 
-		//Tratando o evento do bot�o buscar
+		//Tratando o evento do botao buscar
 		BuscarLivrosListener ouvinteBuscarLivro = new BuscarLivrosListener("Status", campoStatus,buscarFrame);
 		botaoBuscar.addActionListener(ouvinteBuscarLivro);
 		
-		//Tratando o evento do bot�o cancelar
+		//Tratando o evento do botao cancelar
 		BotaoCancelarListener ouvinteCancelar = new BotaoCancelarListener(buscarFrame);
 		botaoCancelar.addActionListener(ouvinteCancelar);
 	}

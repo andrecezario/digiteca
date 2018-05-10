@@ -3,12 +3,16 @@ package aplicacao.bibliotecario.eventos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -128,29 +132,62 @@ public class MenuItemBusEmprestimoListener implements ActionListener {
 				ct.setLayout(new BorderLayout());
 				ct.setBackground(Color.white);
 	
+				int tamanho_borda = 30;
+				JPanel panelEast = new JPanel();
+				panelEast.setOpaque(true);
+				panelEast.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+				panelEast.setBackground(Color.WHITE);
+
+				JPanel panelWest = new JPanel();
+				panelWest.setOpaque(true);
+				panelWest.setPreferredSize(new Dimension(tamanho_borda, tamanho_borda));
+				panelWest.setBackground(Color.WHITE);
+	
 				JPanel painel = new JPanel();
-				painel.setLayout(new GridLayout(6, 2));
+				painel.setLayout(new GridBagLayout());
+				GridBagConstraints cst = new GridBagConstraints();
 				painel.setBackground(Color.white);
+				painel.setBorder(BorderFactory.createTitledBorder("Informações do Empréstimo"));
 	
 				JLabel id = new JLabel("ID do emprestimo:");
 				JLabel valorId = new JLabel(Integer.toString(emprestimo.getIdEmprestimo()));
-				painel.add(id);
-				painel.add(valorId);
+				cst.fill = GridBagConstraints.HORIZONTAL;
+			    cst.gridx = 0;
+			    cst.gridy = 0;
+			    painel.add(id,cst);
+			    cst.gridx = 1;
+			    cst.gridy = 0;
+				painel.add(valorId,cst);
 				
 				JLabel  cpfLeitor= new JLabel("CPF do Leitor:");
 				JLabel valorCpfLeitor = new JLabel(emprestimo.getLeitor().getCpf());
-				painel.add(cpfLeitor);
-				painel.add(valorCpfLeitor);
+				cst.fill = GridBagConstraints.HORIZONTAL;
+			    cst.gridx = 0;
+			    cst.gridy = 1;
+			    painel.add(cpfLeitor,cst);
+			    cst.gridx = 1;
+			    cst.gridy = 1;
+				painel.add(valorCpfLeitor,cst);
 				
 				JLabel isbn = new JLabel("ISBN do Livro:");
 				JLabel valorIsbn = new JLabel(emprestimo.getLivro().getIsbn());
-				painel.add(isbn);
-				painel.add(valorIsbn);
+				cst.fill = GridBagConstraints.HORIZONTAL;
+			    cst.gridx = 0;
+			    cst.gridy = 2;
+			    painel.add(isbn,cst);
+			    cst.gridx = 1;
+			    cst.gridy = 2;
+				painel.add(valorIsbn,cst);
 				
 				JLabel  cpfBiblio= new JLabel("CPF do Bibliotecario:");
 				JLabel valorCpfBiblio = new JLabel(emprestimo.getBibliotecario().getCpf());
-				painel.add(cpfBiblio);
-				painel.add(valorCpfBiblio);
+				cst.fill = GridBagConstraints.HORIZONTAL;
+				cst.gridx = 0;
+				cst.gridy = 3;
+				painel.add(cpfBiblio, cst);
+				cst.gridx = 1;
+				cst.gridy = 3;
+				painel.add(valorCpfBiblio, cst);
 				
 				Icon iconeRotulo = new ImageIcon("src/aplicacao/icones/rotConfEmprestimo.png");
 				JLabel rotulo = new JLabel(iconeRotulo);
@@ -160,9 +197,12 @@ public class MenuItemBusEmprestimoListener implements ActionListener {
 				Icon iconeFechar = new ImageIcon("src/aplicacao/icones/iconeRemover.png");
 				JButton botaoFechar = new JButton("Fechar", iconeFechar);
 				painelBotoes.add(botaoFechar);
+				painelBotoes.setBackground(Color.white);
 				
 				ct.add(rotulo,BorderLayout.NORTH);
 				ct.add(painel,BorderLayout.CENTER);
+				ct.add(panelWest, BorderLayout.WEST);
+				ct.add(panelEast, BorderLayout.EAST);
 				ct.add(painelBotoes,BorderLayout.SOUTH);
 				
 				resultadoFrame.pack();

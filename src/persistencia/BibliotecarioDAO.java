@@ -100,7 +100,7 @@ public class BibliotecarioDAO {
 				b.setTipo(rs.getString("tipo"));
 				System.out.println(b);
 			}else{
-				JOptionPane.showMessageDialog(null, "Este cpf nao existe no sistema!", "ERRO",
+				JOptionPane.showMessageDialog(null, "Este cpf não existe no sistema!", "ERRO",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {

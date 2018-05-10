@@ -50,8 +50,10 @@ public class MenuItemListEmprestimosListener implements ActionListener {
 		
 		//Encontrando os valores da tabela
 		ArrayList<Emprestimo> emprestimosArray = fachadaBiblio.listarEmprestimos();
+
+		System.out.println(emprestimosArray);
 		
-		Object[] colunas = new Object[]{"CPF Leitor" ,"ISBN Livro","CPF Bibliotecário","Data Empréstimo","Data Devolução",};
+		Object[] colunas = new Object[]{"CPF Leitor" ,"ISBN Livro","CPF Bibliotecário","Data Empréstimo","Data Devolução"};
 		
 		Object[][] valores = new Object[emprestimosArray.size()][5];
 		for (int i = 0; i <emprestimosArray.size(); i++) {
@@ -91,16 +93,17 @@ public class MenuItemListEmprestimosListener implements ActionListener {
 		}
 		
 		// Tabela
-		JTable tabelaLivros = new JTable(valores, colunas);
+		JTable tabelaEmprestimos = new JTable(valores, colunas);
 
 		// Mostrar bordas da tabela
-		tabelaLivros.setBorder(new LineBorder(Color.black));
-		tabelaLivros.setGridColor(Color.black);
-		tabelaLivros.setShowGrid(true);
+		tabelaEmprestimos.setBorder(new LineBorder(Color.black));
+		tabelaEmprestimos.setGridColor(Color.black);
+		tabelaEmprestimos.setShowGrid(true);
 
 		// Adicionar rolagem (scroll) para tabela
 		JScrollPane rolagem = new JScrollPane();
-		rolagem.setViewportView(tabelaLivros);
+		rolagem.setViewportView(tabelaEmprestimos);
+		
 		// Botoes
 		Icon iconeFechar = new ImageIcon("src/aplicacao/icones/iconeRemover.png");
 		JButton botaoFechar = new JButton("Fechar", iconeFechar);

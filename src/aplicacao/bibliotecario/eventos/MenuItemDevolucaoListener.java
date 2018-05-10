@@ -93,7 +93,7 @@ public class MenuItemDevolucaoListener implements ActionListener{
 	    cst.gridy = 0;
 		painelTexto.add(campoCpf,cst);
 		
-		JLabel dataDevolucao = new JLabel("Data de Devolucao: ");
+		JLabel dataDevolucao = new JLabel("Data de Devolução: ");
 		cst.fill = GridBagConstraints.HORIZONTAL;
 	    cst.gridx = 0;
 	    cst.gridy = 1;

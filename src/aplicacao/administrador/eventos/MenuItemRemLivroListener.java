@@ -46,6 +46,7 @@ public class MenuItemRemLivroListener implements ActionListener {
 
 		try {
 			mascaraIsbn = new MaskFormatter("###-##-###-####-#");
+			mascaraIsbn.setPlaceholderCharacter('_');
 		} catch (ParseException excp) {
 			JOptionPane.showMessageDialog(null, excp.getMessage());
 			System.exit(-1);

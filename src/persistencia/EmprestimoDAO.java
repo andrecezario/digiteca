@@ -14,7 +14,7 @@ import logica.Livro;
 
 public class EmprestimoDAO {
 
-	private ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
+	//private ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
 	private Banco banco = new Banco();
 	private LivroDAO lDAO = new LivroDAO();
 	private LeitorDAO leitorDAO = new LeitorDAO();
@@ -33,20 +33,9 @@ public class EmprestimoDAO {
 				sql = "Select * from livro where isbn='"+e.getLivro().getIsbn()+"'";
 				rs = banco.query(sql);
 				if(rs.next()){
-					Livro l = new Livro();
-					CategoriaDAO cDAO = new CategoriaDAO();
-					Categoria c = cDAO.buscarCategoriaId(rs.getString("id_categoria"));
-					l.setTitulo(rs.getString("titulo"));
-					l.setCategoria(c);
-					l.setTipo(rs.getString("tipo"));
-					l.setIsbn(rs.getString("isbn"));
-					l.setAutor(rs.getString("autor"));
-					l.setNumeroEdicao(rs.getInt("edicao"));
-					l.setNumeroPaginas(rs.getInt("num_paginas"));
-					l.setStatus(rs.getString("status"));
-					l.setEstante(null);
+					Livro l = lDAO.buscarLivroIsbn(rs.getString("isbn"));
 					e.setLivro(l);
-					if (e.getLivro().getStatus().equals("Disponivel")) {
+					if (l.getStatus().equals("Disponível")) {
 						e.getLivro().setStatus("Ocupado");
 						sql = "Update livro set status='"+e.getLivro().getStatus()+"' where isbn='"+e.getLivro().getIsbn()+"'";
 						banco.update(sql);
@@ -66,7 +55,7 @@ public class EmprestimoDAO {
 								"Emprestimo realizado com sucesso!", "Empréstimo",
 								JOptionPane.DEFAULT_OPTION);
 						return true;
-					} else if (e.getLivro().getStatus().equals("Ocupado")) {
+					} else if (l.getStatus().equals("Ocupado")) {
 						JOptionPane
 								.showMessageDialog(
 										null,
@@ -76,7 +65,7 @@ public class EmprestimoDAO {
 					}
 					else {
 						JOptionPane.showMessageDialog(null,
-								"Emprestimo não encontrado!", "ERRO",
+								"Emprestimo não realizado porque este livro é permanente!", "ERRO",
 								JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
@@ -115,8 +104,7 @@ public class EmprestimoDAO {
 		try {
 			banco.abreConexao();
 			Emprestimo emp = this.buscarEmprestimoLeitor(cpfLeitor);
-			if (emp.getDataDevolucao().equals(dataDevolucao)
-					&& emp.getLeitor().getCpf().equals(cpfLeitor)) {
+			if (emp.getLeitor().getCpf().equals(cpfLeitor)) {
 				
 				emp.getLivro().setStatus("Disponível");
 				banco.abreConexao();
@@ -130,13 +118,13 @@ public class EmprestimoDAO {
 						+ " realizada com sucesso!", "Devolução",
 						JOptionPane.DEFAULT_OPTION);
 				return true;
-			} else if (!emp.getDataDevolucao().equals(dataDevolucao)) {
+			/*} else if (!emp.getDataDevolucao().equals(dataDevolucao)) {
 				JOptionPane
 						.showMessageDialog(
 								null,
 								"Data de devolução não encontrada no respectivo emprestimo!",
 								"ERRO", JOptionPane.ERROR_MESSAGE);
-				return false;
+				return false;*/
 			} else if (!emp.getLeitor().getCpf().equals(cpfLeitor)) {
 				JOptionPane.showMessageDialog(null,
 						"Cpf não encontrado no respectivo emprestimo!", "ERRO",
@@ -158,6 +146,7 @@ public class EmprestimoDAO {
 	}
 	public ArrayList<Emprestimo> listarEmprestimos() {
 		Emprestimo emp = new Emprestimo();
+		ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
 		try {
 			banco.abreConexao();
 			String sql = "Select * from emprestimo";
@@ -166,19 +155,18 @@ public class EmprestimoDAO {
 				emp.setIdEmprestimo(rs.getInt("id_emprestimo"));
 				emp.setDataAtual(rs.getString("data_atual"));
 				emp.setDataDevolucao(rs.getString("data_devolucao"));
-				emp.getLivro().setIsbn(rs.getString("isbn_livro"));
-				emp.getLeitor().setCpf(rs.getString("cpf_leitor"));
-				emp.getBibliotecario().setCpf(rs.getString("cpf_bibliotecario"));
+				emp.setLeitor(leitorDAO.buscarLeitor(rs.getString("cpf_leitor")));
+				emp.setBibliotecario(bDAO.buscarBibliotecario(rs.getString("cpf_bibliotecario")));
+				emp.setLivro(lDAO.buscarLivroIsbn(rs.getString("isbn_livro")));
 				emprestimos.add(emp);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO",
+			JOptionPane.showMessageDialog(null,"Erro no empréstimo Dao", "ERRO",
 					JOptionPane.ERROR_MESSAGE);
 			return null;
 		} finally {
 			banco.fechaConexao();
 		}
-
 		return emprestimos;
 	}
 
