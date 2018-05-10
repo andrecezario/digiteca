@@ -35,7 +35,7 @@ public class EmprestimoDAO {
 				if(rs.next()){
 					Livro l = lDAO.buscarLivroIsbn(rs.getString("isbn"));
 					e.setLivro(l);
-					if (l.getStatus().equals("Disponível")) {
+					if (l.getStatus().equals("Disponivel")) {
 						e.getLivro().setStatus("Ocupado");
 						sql = "Update livro set status='"+e.getLivro().getStatus()+"' where isbn='"+e.getLivro().getIsbn()+"'";
 						banco.update(sql);
@@ -59,7 +59,7 @@ public class EmprestimoDAO {
 						JOptionPane
 								.showMessageDialog(
 										null,
-										"Emprestimo não realizado porque não existem cópias disponíveis do livro!",
+										"Empréstimo não realizado porque não existem cópias disponíveis do livro!",
 										"ERRO", JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
@@ -76,7 +76,7 @@ public class EmprestimoDAO {
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
-			} else if (rs.next()) {
+			} else if (!rs.getString("cpf_leitor").equals(null)) {
 				JOptionPane
 						.showMessageDialog(
 								null,
@@ -106,7 +106,7 @@ public class EmprestimoDAO {
 			Emprestimo emp = this.buscarEmprestimoLeitor(cpfLeitor);
 			if (emp.getLeitor().getCpf().equals(cpfLeitor)) {
 				
-				emp.getLivro().setStatus("Disponível");
+				emp.getLivro().setStatus("Disponivel");
 				banco.abreConexao();
 				sql = "Update livro set status='"+emp.getLivro().getStatus()+"' where isbn='"+emp.getLivro().getIsbn()+"'";
 				banco.update(sql);
@@ -145,13 +145,14 @@ public class EmprestimoDAO {
 		}
 	}
 	public ArrayList<Emprestimo> listarEmprestimos() {
-		Emprestimo emp = new Emprestimo();
+		
 		ArrayList<Emprestimo> emprestimos = new ArrayList<Emprestimo>();
 		try {
 			banco.abreConexao();
 			String sql = "Select * from emprestimo";
 			ResultSet rs = banco.query(sql);
 			while (rs.next()) {
+				Emprestimo emp = new Emprestimo();
 				emp.setIdEmprestimo(rs.getInt("id_emprestimo"));
 				emp.setDataAtual(rs.getString("data_atual"));
 				emp.setDataDevolucao(rs.getString("data_devolucao"));

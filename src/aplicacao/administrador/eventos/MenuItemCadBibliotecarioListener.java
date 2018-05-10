@@ -75,7 +75,7 @@ public class MenuItemCadBibliotecarioListener implements ActionListener {
                mascaraTel = new MaskFormatter("## #####-####");
                mascaraCpf = new MaskFormatter("###.###.###-##");
                mascaraData = new MaskFormatter("##/##/####");
-               mascaraLogin = new MaskFormatter("LLLLL-##");
+               mascaraLogin = new MaskFormatter("bibli-##");
                mascaraLogin.setPlaceholderCharacter('_');
                mascaraTel.setPlaceholderCharacter('_');
                mascaraCpf.setPlaceholderCharacter('_');
@@ -122,7 +122,7 @@ public class MenuItemCadBibliotecarioListener implements ActionListener {
 	    cst.gridy = 2;
 		painel.add(campoDataNasc,cst);
 
-		JLabel endereco = new JLabel("Endereco:");
+		JLabel endereco = new JLabel("Endereço:");
 		JTextField campoEndereco = new JTextField(30);
 	    cst.fill = GridBagConstraints.HORIZONTAL;
 	    cst.gridx = 0;
